@@ -1,0 +1,28 @@
+/* #bigbluebox {
+    margin-top:100px;
+    width: 500px;
+    height: 500px;
+    background-color: cornflowerblue;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} */
+
+.videobox{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* .list_inline{
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.vhs{
+    width: 380px;
+    margin: 20px;
+}
+

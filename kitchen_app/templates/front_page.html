@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Login</title>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      
+      <link rel="stylesheet" href="{% static 'front_page.css' %}">  
+
+      <!-- <script src="{% static 'js/script.js' %}"></script> -->
+    </head>
+
+  <body>
+    {% if not logged_user %}
+    <nav>
+        <ul>
+          <li id="login">
+            <a id="login-trigger" href="#">
+              Log in <span>▼</span>
+            </a>
+            <div id="login-content">
+              <form action ='login' method = 'post'>
+                {% csrf_token%} 
+                <fieldset id="inputs">
+                  <input  id="username"
+                          type="email"
+                          name="email"
+                          placeholder="Your email address"
+                          required>
+                  <input  id="password"
+                          type="password"
+                          name="password"
+                          placeholder="Password"
+                          required>
+                </fieldset>
+                <fieldset id="actions">
+                  <input  type="submit"
+                          id="submit"
+                          value="Log in">
+                  <label>
+                    <input  type="checkbox"
+                            checked="checked">
+                    Keep me signed in
+                  </label>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+          <li id="signup">
+            <a href="/">Register</a>
+          </li>
+        </ul>
+      </nav>
+
+    {% endif %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">KitchenTown</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href='/drop_menu'>Search Page! <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href='/logout'>Logout! <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href='/my_reviews'>My reviews <span class="sr-only">(current)</span></a>
+          </li>
+          <li>
+
+            
+          </li>
+        </ul>
+      </div>
+      
+    </nav>
+
+
+
+    <div class = "videobox">
+      {% for video in all_videos %}
+        <div class = "vhs">
+          <ul class="list-inline"></ul>
+            <li class="list-inline-item"><iframe width="380" height="240" src="https://www.youtube.com/embed/{{video.video_id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p><a href="/review/{{video.video_id}}"id = "video_id" name = "video_id">Visit the review page! </a></p></li>
+          {% for review in video.review_of_video.all %}
+          {% if forloop.first %}
+          <p>Review: {{review.article}}</p>
+          {% endif %}
+          {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+        
+      
+    
+    </body>
+    
+    <p></p>
+    <form action='/page2/{{search_term}}'>
+      <button type="submit" class="btn btn-dark">More videos</button>
+      </form>
+    <p></p>
+</html>
+

@@ -1,0 +1,31 @@
+.list-inline-item{ 
+    margin-left: 100px;
+    margin-top: 100px;
+}
+
+.move-right {
+    margin-left: 100px;
+}
+
+.inline-block{
+    display: inline-block; 
+ }
+
+.form-group{
+    margin: 50px 260px 50px 260px;
+}
+.form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+.slidecontainer{
+    width: 40%;
+    margin: 20px 20px 20px 300px;
+    display: flex;
+}
+
+#slide_description{
+    margin-left: 310px;
+}

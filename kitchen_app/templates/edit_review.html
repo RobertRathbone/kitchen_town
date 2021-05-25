@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>KitchenTown</title>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+      <link rel="stylesheet" href="{% static 'view_reviews.css' %}">  
+
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+      </script>
+      <!-- Allegedly allows textbox to submit on enter -->
+        <script>
+        function pressed(e) {
+            // Has the enter key been pressed?
+            if ( (window.event ? event.keyCode : e.which) == 13) { 
+                // If it has been so, manually submit the <form>
+                document.forms[0].submit();
+            }
+        }
+        </script>
+
+    <!-- <script src="{% static 'js/view.js' %}"></script> -->
+</head>
+
+<body>  
+    {% if not logged_user %}
+    <nav>
+        <ul>
+          <li id="login">
+            <a id="login-trigger" href="#">
+              Log in <span>▼</span>
+            </a>
+            <div id="login-content">
+              <form action ='login' method = 'post'>
+                {% csrf_token%} 
+                <fieldset id="inputs">
+                  <input  id="username"
+                          type="email"
+                          name="email"
+                          placeholder="Your email address"
+                          required>
+                  <input  id="password"
+                          type="password"
+                          name="password"
+                          placeholder="Password"
+                          required>
+                </fieldset>
+                <fieldset id="actions">
+                  <input  type="submit"
+                          id="submit"
+                          value="Log in">
+                  <label>
+                    <input  type="checkbox"
+                            checked="checked">
+                    Keep me signed in
+                  </label>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+          <li id="signup">
+            <a href="/">Register</a>
+          </li>
+        </ul>
+      </nav>
+    {% endif %}
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<div class="list-inline-item"><iframe width="760" height="480" src="https://www.youtube.com/embed/{{video_id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<form action='/update_review/{{review_id}}' method='post'>
+                {% csrf_token%} 
+    <pre id = "slide_description"> Yummy             Easy          Entertaining       Healthy</pre>
+<div class="slidecontainer">
+    <input placeholder = "1 Yummy 10" name = "yummy" type="range" min="1" max="10" value={{this_review.yummy}} * 5 >
+    <p>10</p>
+    <input name = "easy" type="range" min="1" max="5" value={{this_review.easy}} * 10>
+    <p>5</p>
+    <input name = "entertaining" type="range" min="1" max="5" value={{this_review.entertaining}} * 10>
+    <p>5</p>
+    <input name = "healthy" type="range" min="1" max="5" value={{this_review.heatlthy}} * 10>
+    <p>5</p>
+</div>
+<div class="form-group">
+    <label for="exampleFormControlTextarea1">Write a review</label>
+    <textarea onkeydown="pressed(event)" class="form-control" rows ="3" name = "review" id="review" placeholder = "{{this_review.article}}"></textarea>
+  </div>
+</form>
+
+<form class="move-right" action='/delete_review/{{review_id}}'>
+    <button type="submit" class="btn btn-dark" class="move-right">Delete</button>
+</form>
+
+<div class="container">
+	<h2 class="text-center">Reviews!</h2>
+  
+  {% for review in this_video.review_of_video.all %}	
+  <li><em>{{review.article}} by  {{review.user.first_name}} {{review.user.last_name}}</em></li>
+  
+{% endfor %}
+<pre>
+  Average Yummy: {{y}} 
+  Entertaining:  {{n}} 
+  Easy:          {{e}} 
+  Healthy:       {{h}}
+  </pre>
+<!-- Good:          {{g}} -->
+<div class="form-inline">
+    <form action='/success'>
+        <button type="submit" class="btn btn-dark" >Search page</button>
+    </form>
+    <form  action ='/my_reviews/'>
+        <button type="submit" class="btn btn-dark" >My reviews</button>
+    </form>
+</div>
+</body>
+</html>
