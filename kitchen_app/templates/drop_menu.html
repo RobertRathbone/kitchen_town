@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>KitchenTown</title>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <!-- for drop down search -->
+      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <!-- dropdown search -->
+      
+      <link rel="stylesheet" href="{% static 'styles.css' %}">  
+
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+      </script>
+      
+    </script>
+    <!-- Allegedly allows textbox to submit on enter -->
+      <script>
+      function pressed(e) {
+          // Has the enter key been pressed?
+          if ( (window.event ? event.keyCode : e.which) == 13) { 
+              // If it has been so, manually submit the <form>
+              document.forms[0].submit();
+          }
+      }
+      </script>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+
+<body>  
+  {% if not logged_user %}
+    <nav>
+        <ul>
+          <li id="login">
+            <a id="login-trigger" href="#">
+              Log in <span>▼</span>
+            </a>
+            <div id="login-content">
+              <form action ='login' method = 'post'>
+                {% csrf_token%} 
+                <fieldset id="inputs">
+                  <input  id="username"
+                          type="email"
+                          name="email"
+                          placeholder="Your email address"
+                          required>
+                  <input  id="password"
+                          type="password"
+                          name="password"
+                          placeholder="Password"
+                          required>
+                </fieldset>
+                <fieldset id="actions">
+                  <input  type="submit"
+                          id="submit"
+                          value="Log in">
+                  <label>
+                    <input  type="checkbox"
+                            checked="checked">
+                    Keep me signed in
+                  </label>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+          <li id="signup">
+            <a href="/">Register</a>
+          </li>
+        </ul>
+      </nav>
+  {% endif %}
+
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">KitchenTown</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href='/'>Suprise me! <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href='/logout'>Logout! <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+
+      <div class="container">
+        <div class="row searchFilter" >
+           <div class="col-sm-12" >
+            <div class="input-group" >
+             <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
+             <div class="input-group-btn" >
+              <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Filter</span> <span class="caret" >&nbsp;</span></button>
+              <form action = "/advanced_search" method = "get" class="dropdown-menu dropdown-menu-right" >
+                <!-- <div class="col-20"> -->
+                  <!-- <input type="text" class="form-control bigger" name = "search" placeholder="search recipes"> -->
+                <!-- </div> -->
+                 <!-- <ul class="category_filters" >
+                  <li >
+                   <input class="cat_type category-input" data-label="All" value="yummy" name="yummy" type="radio" ><label for="all" >Yummy</label>
+                  </li>
+                  <li >
+                   <input type="radio" name="easy"  value="easy" ><label class="category-label" for="Design" >Easy</label>
+                  </li>
+                  <li >
+                   <input type="radio" name="entertaining"  value="entertaining" ><label class="category-label" for="Marketing" >Entertaining</label>
+                  </li>
+                  <li >
+                   <input type="radio" name="healthy"  value="healthy" ><label class="category-label" for="Programming" >Healthy</label>
+                  </li>
+                 </ul>
+                
+              <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
+            </form>
+             </div>
+            </div>
+           </div>
+        </div>
+      </div>
+    </div>
+    
+  </nav>  -->
+
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">KitchenTown</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- <li class="nav-item active">
+          <a class="nav-link" href='/drop_menu'>Search Page! <span class="sr-only">(current)</span></a>
+        </li> -->
+        <li class="nav-item active">
+          <a class="nav-link" href='/logout'>Logout! <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href='/my_reviews'>My reviews <span class="sr-only">(current)</span></a>
+        </li>
+        <li>
+
+          
+        </li>
+      </ul>
+    </div>
+    
+  </nav>
+
+
+<div class ="text-center">
+  <h3>KitchenTown</h3>
+  <p>Search Recipe Videos. Write Reviews. Read Reviews.</p>
+</div>
+ 
+
+
+
+
+      <div class = "videobox">
+        <div class = "vhs">
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/78-6NdD1mS8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>43 4.7 &#9734;<br>"I'd give this Fudge 12 stars if I could. It's the best thing since sliced bread, if bread were made out of chocolate."</p>
+            <!-- <a href="/review/78-6NdD1mS8"id = "78-6NdD1mS8" name = "78-6NdD1mS8">Visit the review page! </a> -->
+        </div>
+        <div class = "vhs">
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/dTNhbHNeuD4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>32 4.1 &#9734;<br>"Marjorie explains the old fashioned technique skillfully, still this fudge doesn't quite justify all the work. But if you're doing the work, I'm not complaining."</p>
+        </div>
+        <div>
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/Z1z2iD0iIxE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>12 4.8 &#9734;<br>"It's like God kissing people with your tongue."</p>
+        </div>
+    </div>
+    <div class="card">
+        <!-- <h5 class="card-header">Cook!</h5> -->
+
+
+
+
+        <div class="card-body">
+          <h5 class="card-title">Curated recipe videos</h5>
+          
+        </div>
+          <p class="card-text">Search for videos. Rate them based on yummyness, entertaining, health and ease.</p>
+          <form action='/search_youtube' method='post'>
+                        {% csrf_token%} 
+            <div class="col-12">
+              <input type="text" class="form-control" name = "search" placeholder="search recipes">
+            </div>
+              <!-- <button type="submit" class="btn btn-primary">Search Recipes!</button> -->
+    
+        </form>
+      </div>
+
+
+      <div class = "videobox">
+        <div class = "vhs">
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/HukqEjCPkhU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p class = "panel">112 4.6 &#9734;<br>
+                <div class="panel-footer">
+                     <p>"So little work. So much flavor. If I had known time was such an important ingredient, I would have saved more of it."</p>
+                </div>
+        </div>
+        <div class = "vhs">
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/aweDxjO0Xyg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>18 4.1 &#9734;<br>"Not only do you learn how to make an excellent pizza dough, but you get to see the joy of messy fingers."</p>
+        </div>
+        <div class = "vhs">
+            <iframe width="380" height="240" src="https://www.youtube.com/embed/VIJlRXMfW50" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>27 4.9 &#9734;<br>"Learn to toss like a pro, from a pro. It brings me back to my pizza delivery days, when the cooks would let me throw my own pie..."</p>
+        </div>
+    </div>
+    <!-- Load our JS file AFTER jQuery so we have access to jQuery -->
+    <script src="app.js"></script>
+
+</body>
+
+ 
+</html>
+
