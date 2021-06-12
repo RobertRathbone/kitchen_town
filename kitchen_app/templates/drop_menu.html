@@ -130,6 +130,10 @@
 
 
 
+  
+
+
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">KitchenTown</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -162,13 +166,25 @@
 </div>
  
 
+<div class = "videobox">
+  {% for video in all_videos %}
+    <div class = "vhs">
+      <ul class="list-inline"></ul>
+        <li class="list-inline-item"><iframe width="380" height="240" src="https://www.youtube.com/embed/{{video.video_id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p><a href="/review/{{video.video_id}}"id = "video_id" name = "video_id">Visit the review page! </a></p></li>
+      {% for review in video.review_of_video.all %}
+      {% if forloop.first %}
+      <p>Review: {{review.article}}</p>
+      {% endif %}
+      {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
 
 
-
-      <div class = "videobox">
+      <!-- <div class = "videobox">
         <div class = "vhs">
             <iframe width="380" height="240" src="https://www.youtube.com/embed/78-6NdD1mS8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>43 4.7 &#9734;<br>"I'd give this Fudge 12 stars if I could. It's the best thing since sliced bread, if bread were made out of chocolate."</p>
-            <!-- <a href="/review/78-6NdD1mS8"id = "78-6NdD1mS8" name = "78-6NdD1mS8">Visit the review page! </a> -->
         </div>
         <div class = "vhs">
             <iframe width="380" height="240" src="https://www.youtube.com/embed/dTNhbHNeuD4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>32 4.1 &#9734;<br>"Marjorie explains the old fashioned technique skillfully, still this fudge doesn't quite justify all the work. But if you're doing the work, I'm not complaining."</p>
@@ -176,9 +192,9 @@
         <div>
             <iframe width="380" height="240" src="https://www.youtube.com/embed/Z1z2iD0iIxE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>12 4.8 &#9734;<br>"It's like God kissing people with your tongue."</p>
         </div>
-    </div>
+    </div> -->
     <div class="card">
-        <!-- <h5 class="card-header">Cook!</h5> -->
+
 
 
 
@@ -190,16 +206,64 @@
           <p class="card-text">Search for videos. Rate them based on yum, entertainment, health and ease.</p>
           <form action='/search_youtube' method='post'>
                         {% csrf_token%} 
+
+            <div class="form-check form-check-inline">
+
+              <input type ="hidden" name = "searchParameter" value ="none">
+
+              <input
+                class="form-check-input"
+                type="radio"
+                id="yummy" name="searchParameter" value="yummy"
+              />
+              <label class="form-check-label" for="yummy">yummy</label>
+            </div>
+            
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="easy" name="searchParameter" value="easy"
+              />
+              <label class="form-check-label" for="easy">easy</label>
+            </div>
+            
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="entertaining" name="searchParameter" value="entertaining">
+              <label class="form-check-label" for="entertaining">entertaining</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="healthy" name="searchParameter" value="healthy">
+              <label class="form-check-label" for="healthy">healthy</label>
+            </div>
+
+<!--             
+              <input type ="hidden" name = "searchParameter" value ="none">
+              <input type="radio" id="yummy" name="searchParameter" value="yummy">
+              <label for="yummy">yummy</label><br>
+              <input type="radio" id="easy" name="searchParameter" value="easy">
+              <label for="easy">easy</label><br>
+              <input type="radio" id="entertaining" name="searchParameter" value="entertaining">
+              <label for="healthy">healthy</label>
+              <input type="radio" id="healthy" name="searchParameter" value="entertaining">
+              <label for="entertaining">entertaining</label> -->
             <div class="col-12">
               <input type="text" class="form-control" name = "search" placeholder="search recipes">
-            </div>
+            </div> 
               <!-- <button type="submit" class="btn btn-primary">Search Recipes!</button> -->
     
         </form>
       </div>
 
 
-      <div class = "videobox">
+      <!-- <div class = "videobox">
         <div class = "vhs">
             <iframe width="380" height="240" src="https://www.youtube.com/embed/HukqEjCPkhU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p class = "panel">112 4.6 &#9734;<br>
                 <div class="panel-footer">
@@ -212,8 +276,25 @@
         <div class = "vhs">
             <iframe width="380" height="240" src="https://www.youtube.com/embed/VIJlRXMfW50" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>27 4.9 &#9734;<br>"Learn to toss like a pro, from a pro. It brings me back to my pizza delivery days, when the cooks would let me throw my own pie..."</p>
         </div>
-    </div>
-    <!-- Load our JS file AFTER jQuery so we have access to jQuery -->
+    </div> -->
+
+    <div class = "videobox">
+      {% for video in more_videos %}
+        <div class = "vhs">
+          <ul class="list-inline"></ul>
+            <li class="list-inline-item"><iframe width="380" height="240" src="https://www.youtube.com/embed/{{video.video_id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p><a href="/review/{{video.video_id}}"id = "video_id" name = "video_id">Visit the review page! </a></p></li>
+          {% for review in video.review_of_video.all %}
+          {% if forloop.first %}
+          <p>Review: {{review.article}}</p>
+          {% endif %}
+          {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+
+
+     <!-- Load our JS file AFTER jQuery so we have access to jQuery -->
     <script src="app.js"></script>
 
 </body>
