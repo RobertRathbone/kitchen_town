@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import User, Video, Review
 from django.contrib import messages
-import bcrypt, requests
+import bcrypt, requests, random, math
 
 def index(request):
     print (60* "*")
@@ -25,7 +25,7 @@ def register(request):
     print (60 * "*")
     print (new_user)
 
-    return redirect('/success')
+    return redirect('/drop_menu')
 
 def success(request):
     if 'userid' not in request.session:
@@ -53,7 +53,7 @@ def login(request):
         # if we get True after checking the password, we may put the user id in session
         request.session['userid'] = logged_user.id
         # never render on a post, always redirect!
-        return redirect('/success')
+        return redirect('/drop_menu')
 
     messages.error(request, "Login failed. And that's fine.")
     return redirect('/')
@@ -74,37 +74,67 @@ def logout(request):
     return redirect('/')
 
 def drop_menu(request):
-    return render(request, "drop_menu.html")
+    all_videos = []
+    more_videos = []
+    logged_user=User.objects.get(id=request.session['userid'])
+    last_review = Review.objects.all().last()
+    for i in range(3):
+        rand1 = random.randint(1,math.floor((last_review.id)/2))
+        temp_review = Review.objects.get(id = rand1)
+        all_videos.append(temp_review.video)
+    for i in range(3):
+        rand1 = random.randint(math.floor((last_review.id)/2), last_review.id-1)
+        temp_review = Review.objects.get(id = rand1)
+        more_videos.append(temp_review.video)
+    print(rand1, "$$$$$")
+    context ={
+        "all_videos" : all_videos,
+        "more_videos" : more_videos,
+        "logged_user" : logged_user
+
+    }
+    return render(request, "drop_menu.html", context)
 
 def search_youtube(request):
     if 'userid' not in request.session:
         return redirect('/')
-    logged_user=User.objects.get(id=request.session['userid'])
+    logged_user=User.objects.get(id=request.session['userid']
+    )
+    yummyVariable = request.POST['searchParameter']
     search_term = request.POST["search"]
+    print(yummyVariable)
 
     # part of dynamic page2 attempt
     # next_term= 13
     # request.session['next_term'] = int(next_term)
 
-    # live search of youtube, works great, also uncomment out data down below &lr=lang_en
-
-    # url = f"https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&q={search_term}%20recipe&safeSearch=none&videoCaption=any&lr=lang_en&key=" ''
-    # response = requests.get(url) 
-    # data = response.json()
-    # for i in range(50):
-    #     add_id = data["items"][i]["id"]["videoId"]
-    #     if Video.objects.filter(video_id = add_id):
-    #         pass
-    #     else: Video.objects.create(video_id = add_id, search = search_term)
-
-    all_videos = Video.objects.filter(search = search_term)[:12]
-
+    # live search of youtube, works great, only runs if seacrh is not already in db, saving api calls.
+    if Video.objects.filter(search = search_term).first():
+        data = []
+    else:
+        url = f"https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&q={search_term}%20recipe&safeSearch=none&videoCaption=any&lr=lang_en&key=" ''
+        response = requests.get(url) 
+        data = response.json()
+        for i in range(50):
+            add_id = data["items"][i]["id"]["videoId"]
+            if Video.objects.filter(video_id = add_id):
+                pass
+            else: Video.objects.create(video_id = add_id, search = search_term)
+    if yummyVariable == "none":
+        all_videos = Video.objects.filter(search = search_term)[:12]
+    else:
+        all_videos =[]
+        all_reviews = Review.objects.filter().order_by(yummyVariable).reverse()[:50]
+        for i in range(50):
+            temp_video = all_reviews[i].video
+            if temp_video.search == search_term:
+                all_videos.append(temp_video)
 
 
     # doesn't work video_id undefined
     # review_of_videos = Review.objects.filter(video=Video.objects.get(id={{video_id}}))
     context ={
-        # "data" : data,
+        "data" : data,
         "all_videos" : all_videos,
         "logged_user" : logged_user,
         "search_term" : search_term
